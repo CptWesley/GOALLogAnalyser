@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.8
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GOALLogAnalyser", "GOALLogAnalyser.csproj", "{3950B596-A95F-4690-9306-36E15AAC022D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3950B596-A95F-4690-9306-36E15AAC022D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3950B596-A95F-4690-9306-36E15AAC022D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3950B596-A95F-4690-9306-36E15AAC022D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3950B596-A95F-4690-9306-36E15AAC022D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2A3978E0-F809-4354-BE03-F3D2426C3DEF}
+	EndGlobalSection
+EndGlobal
