@@ -11,18 +11,22 @@ Analyses GOAL logs.
 #### Output formats:
 - Text files
 - JSON
-- HTML & CSS
+- HTML & CSS (WIP)
 
 
 ### How to use:
 #### Preperation:
-0. In _Eclipse_ > __Window__ > __Preferences__
-1. _Goal_ > __Logging__
-2. Enable:
+1. In _Eclipse_ > __Window__ > __Preferences__
+2. _Goal_ > __Logging__
+3. Enable:
     * Write Logs to file
     * The reasoning seperator
     * Include statistics each cycle seperator
     * Entry of a module
     * Exit of a module
-3. Run the MAS.
+4. Run the MAS.
 #### Analyse:
+0. __*NB: By default this program will export all formats. Start using the `-json`, `-text`, `-site` flag arguments to get single type of output.*__
+1. Drag and drop all log files onto the executable to process the data.
+2. Wait until the program finishes.
+3. Output can be found in the newly created __*output*__ directory located in the original directory where the logs were dragged from.
