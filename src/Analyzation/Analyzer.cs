@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GOALLogAnalyser.Analyzation.Agents;
+using GOALLogAnalyser.Analyzation.Threads;
+using GOALLogAnalyser.Parsing;
 
 namespace GOALLogAnalyser.Analyzation
 {
@@ -59,8 +62,10 @@ namespace GOALLogAnalyser.Analyzation
             Progress = 0;
             Total = agents.Length;
 
+            Dictionary<int, List<Record>> threads = GenerateThreadDictionary(agents);
             Dictionary<string, List<Agent>> sortedAgents = SortAgents(agents);
-            Profiles = GenerateProfiles(sortedAgents);
+            Profiles = GenerateProfiles(sortedAgents, threads);
+
             Done = true;
         }
 
@@ -93,7 +98,7 @@ namespace GOALLogAnalyser.Analyzation
         /// </summary>
         /// <param name="agents">The agents.</param>
         /// <returns>A List of generated profiles.</returns>
-        private List<AgentTypeProfile> GenerateProfiles(Dictionary<string, List<Agent>> agents)
+        private List<AgentTypeProfile> GenerateProfiles(Dictionary<string, List<Agent>> agents, Dictionary<int, List<Record>> threads)
         {
             List<AgentTypeProfile> result = new List<AgentTypeProfile>();
 
@@ -113,6 +118,32 @@ namespace GOALLogAnalyser.Analyzation
                 result.Add(profile);
             }
             Task.WaitAll(tasks.ToArray());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Generates the thread dictionary.
+        /// </summary>
+        /// <param name="agents">The agents.</param>
+        /// <returns></returns>
+        private Dictionary<int, List<Record>> GenerateThreadDictionary(Agent[] agents)
+        {
+            Dictionary<int, List<Record>> result = new Dictionary<int, List<Record>>();
+
+            foreach (Agent a in agents)
+            {
+                foreach (Record r in a.GetRecords())
+                {
+                    if (!result.ContainsKey(r.Thread))
+                        result.Add(r.Thread, new List<Record>(1));
+                    result[r.Thread].Add(r);
+                }
+            }
+
+            foreach (KeyValuePair<int, List<Record>> kv in result)
+                new RecordSorter(kv.Value).Sort();
+
 
             return result;
         }
