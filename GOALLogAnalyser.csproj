@@ -67,6 +67,7 @@
     <Compile Include="src\Analyzation\Queries\QueryProfileCollection.cs" />
     <Compile Include="src\Analyzation\RecordMessageParser.cs" />
     <Compile Include="src\Analyzation\RecordMessageType.cs" />
+    <Compile Include="src\Analyzation\Threads\RecordFinder.cs" />
     <Compile Include="src\Analyzation\Threads\RecordSorter.cs" />
     <Compile Include="src\Exceptions\InvalidFileContentException.cs" />
     <Compile Include="src\Exceptions\InvalidFileNameException.cs" />

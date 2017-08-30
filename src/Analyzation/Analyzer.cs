@@ -64,7 +64,7 @@ namespace GOALLogAnalyser.Analyzation
 
             Dictionary<int, List<Record>> threads = GenerateThreadDictionary(agents);
             Dictionary<string, List<Agent>> sortedAgents = SortAgents(agents);
-            Profiles = GenerateProfiles(sortedAgents, threads);
+            Profiles = GenerateProfiles(sortedAgents, new RecordFinder(threads));
 
             Done = true;
         }
@@ -98,7 +98,7 @@ namespace GOALLogAnalyser.Analyzation
         /// </summary>
         /// <param name="agents">The agents.</param>
         /// <returns>A List of generated profiles.</returns>
-        private List<AgentTypeProfile> GenerateProfiles(Dictionary<string, List<Agent>> agents, Dictionary<int, List<Record>> threads)
+        private List<AgentTypeProfile> GenerateProfiles(Dictionary<string, List<Agent>> agents, RecordFinder recordFinder)
         {
             List<AgentTypeProfile> result = new List<AgentTypeProfile>();
 
@@ -110,7 +110,7 @@ namespace GOALLogAnalyser.Analyzation
                 {
                     tasks.Add(Task.Factory.StartNew(() =>
                     {
-                        profile.Add(AgentProfile.Create(a.Name, a.GetRecords()));
+                        profile.Add(AgentProfile.Create(a.Name, a.GetRecords(), recordFinder));
                         ++Progress;
                     }));
                 }

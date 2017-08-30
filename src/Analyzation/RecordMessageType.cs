@@ -21,6 +21,14 @@
         /// The cycle statistics type.
         /// </summary>
         public const uint CycleStatisticsType = 3;
+        /// <summary>
+        /// The query success type.
+        /// </summary>
+        public const uint QuerySuccessType = 4;
+        /// <summary>
+        /// The query failure type.
+        /// </summary>
+        public const uint QueryFailureType = 5;
 
         /// <summary>
         /// The module entry pattern.
@@ -34,5 +42,13 @@
         /// The cycle statistics pattern.
         /// </summary>
         public const string CycleStatisticsPattern = @"non-state actions: (\d+), send actions (\d+), state queries: (\d+), total\[beliefs: (\d+), goals: (\d+), messages: (\d+), percepts: (\d+)\]|(\s+)?\+{7}\s+Cycle (\d+)\s+\+{7}";
+        /// <summary>
+        /// The query success pattern.
+        /// </summary>
+        public const string QuerySuccessPattern = @"(?s)condition of '(.+)' holds for: \[(.+)\]\.";
+        /// <summary>
+        /// The query failure pattern.
+        /// </summary>
+        public const string QueryFailurePattern = @"(?s)condition of '(.+)' does not hold\.";
     }
 }

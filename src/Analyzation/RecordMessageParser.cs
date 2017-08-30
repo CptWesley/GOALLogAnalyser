@@ -13,7 +13,9 @@ namespace GOALLogAnalyser.Analyzation
         {
             { RecordMessageType.ModuleEntryType, RecordMessageType.ModuleEntryPattern },
             { RecordMessageType.ModuleExitType, RecordMessageType.ModuleExitPattern },
-            { RecordMessageType.CycleStatisticsType, RecordMessageType.CycleStatisticsPattern }
+            { RecordMessageType.CycleStatisticsType, RecordMessageType.CycleStatisticsPattern },
+            { RecordMessageType.QuerySuccessType, RecordMessageType.QuerySuccessPattern },
+            { RecordMessageType.QueryFailureType, RecordMessageType.QueryFailurePattern }
         };
 
         /// <summary>

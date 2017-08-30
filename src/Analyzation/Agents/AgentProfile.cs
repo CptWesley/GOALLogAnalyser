@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GOALLogAnalyser.Analyzation.Cycles;
 using GOALLogAnalyser.Analyzation.Modules;
 using GOALLogAnalyser.Analyzation.Queries;
+using GOALLogAnalyser.Analyzation.Threads;
 using GOALLogAnalyser.Parsing;
 
 namespace GOALLogAnalyser.Analyzation.Agents
@@ -59,7 +60,7 @@ namespace GOALLogAnalyser.Analyzation.Agents
         /// <param name="name">The name.</param>
         /// <param name="records">The records.</param>
         /// <returns>A new agentprofile based on the supplied records.</returns>
-        public static AgentProfile Create(string name, Record[] records)
+        public static AgentProfile Create(string name, Record[] records, RecordFinder recordFinder)
         {
             AgentProfile result = new AgentProfile(name);
 
@@ -83,7 +84,6 @@ namespace GOALLogAnalyser.Analyzation.Agents
 
                             mp.AddExecution(executionTime);
                             result.ModuleProfiles.Add(mp);
-
                         }
                         else
                         {
@@ -114,10 +114,42 @@ namespace GOALLogAnalyser.Analyzation.Agents
                         result.CycleProfile.Add(cycle);
                         lastCycleTime = r.Time;
                         break;
+                    case RecordMessageType.QuerySuccessType:
+                        AddQuery(result, msg.Item2[0], FindTimeSincePreviousRecord(r, recordFinder), true);
+                        break;
+                    case RecordMessageType.QueryFailureType:
+                        AddQuery(result, msg.Item2[0], FindTimeSincePreviousRecord(r, recordFinder), false);
+                        break;
                 }
             }
 
             return result;
+        }
+
+        private static void AddQuery(AgentProfile ap, string query, long time, bool hit)
+        {
+            int index = ap.QueryProfiles.IndexOf(query);
+            if (index == -1)
+            {
+                QueryProfile qp = new QueryProfile(query);
+
+                qp.Add(time, hit);
+                ap.QueryProfiles.Add(qp);
+            }
+            else
+            {
+                ap.QueryProfiles[index].Add(time, hit);
+            }
+        }
+
+        private static long FindTimeSincePreviousRecord(Record r, RecordFinder recordFinder)
+        {
+            int index = recordFinder.IndexOf(r.Thread, r.Sequence);
+
+            if (index == 0)
+                return 0;
+
+            return r.Time - recordFinder.Threads[r.Thread][index - 1].Time;
         }
     }
 }
