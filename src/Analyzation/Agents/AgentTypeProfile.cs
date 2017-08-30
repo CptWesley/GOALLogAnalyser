@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GOALLogAnalyser.Analyzation.Cycles;
 using GOALLogAnalyser.Analyzation.Modules;
+using GOALLogAnalyser.Analyzation.Queries;
 
 namespace GOALLogAnalyser.Analyzation.Agents
 {
@@ -37,6 +38,13 @@ namespace GOALLogAnalyser.Analyzation.Agents
         /// The cycle profile.
         /// </value>
         public CycleProfile CycleProfile { get; private set; }
+        /// <summary>
+        /// Gets the query profiles.
+        /// </summary>
+        /// <value>
+        /// The query profiles.
+        /// </value>
+        public QueryProfileCollection QueryProfiles { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AgentTypeProfile"/> class.
@@ -48,6 +56,7 @@ namespace GOALLogAnalyser.Analyzation.Agents
             ModuleProfiles = new ModuleProfileCollection();
             AgentProfiles = new List<AgentProfile>();
             CycleProfile = new CycleProfile();
+            QueryProfiles = new QueryProfileCollection();
         }
 
         /// <summary>
@@ -58,6 +67,7 @@ namespace GOALLogAnalyser.Analyzation.Agents
         {
             AgentProfiles.Add(ap);
 
+            // Add all module profiles.
             foreach (ModuleProfile mp in ap.ModuleProfiles)
             {
                 bool contained = false;
@@ -78,6 +88,28 @@ namespace GOALLogAnalyser.Analyzation.Agents
                 }
             }
 
+            // Add all query profiles.
+            foreach (QueryProfile qp in ap.QueryProfiles)
+            {
+                bool contained = false;
+
+                for (int i = 0; i < QueryProfiles.Count; ++i)
+                {
+                    if (qp.Query == QueryProfiles[i].Query)
+                    {
+                        contained = true;
+                        QueryProfiles[i] += qp;
+                        break;
+                    }
+                }
+
+                if (!contained)
+                {
+                    QueryProfiles.Add(qp);
+                }
+            }
+
+            // Add cycle profile
             CycleProfile += ap.CycleProfile;
         }
     }

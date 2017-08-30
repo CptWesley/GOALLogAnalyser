@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GOALLogAnalyser.Analyzation.Cycles;
 using GOALLogAnalyser.Analyzation.Modules;
+using GOALLogAnalyser.Analyzation.Queries;
 using GOALLogAnalyser.Parsing;
 
 namespace GOALLogAnalyser.Analyzation.Agents
@@ -32,6 +33,13 @@ namespace GOALLogAnalyser.Analyzation.Agents
         /// The cycle profile.
         /// </value>
         public CycleProfile CycleProfile { get; }
+        /// <summary>
+        /// Gets the query profiles.
+        /// </summary>
+        /// <value>
+        /// The query profiles.
+        /// </value>
+        public QueryProfileCollection QueryProfiles { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AgentProfile"/> class.
@@ -42,6 +50,7 @@ namespace GOALLogAnalyser.Analyzation.Agents
             Name = name;
             ModuleProfiles = new ModuleProfileCollection();
             CycleProfile = new CycleProfile();
+            QueryProfiles = new QueryProfileCollection();
         }
 
         /// <summary>
