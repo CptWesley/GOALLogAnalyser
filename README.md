@@ -19,10 +19,10 @@ Analyses GOAL logs.
 0. In _Eclipse_ > __Window__ > __Preferences__
 1. _Goal_ > __Logging__
 2. Enable:
-..* Write Logs to file
-* The reasoning seperator
-* Include statistics each cycle seperator
-* Entry of a module
-* Exit of a module
+    * Write Logs to file
+    * The reasoning seperator
+    * Include statistics each cycle seperator
+    * Entry of a module
+    * Exit of a module
 3. Run the MAS.
 #### Analyse:
