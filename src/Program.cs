@@ -19,18 +19,6 @@ namespace GOALLogAnalyser
 
         static void Main(string[] args)
         {
-            // DEBUG LINE
-            string[] debugArgs = new[]
-            {
-                @"C:\Users\Wesley\Desktop\logs\zergling_6_17-08-29_10.20.34.txt.log",
-                @"C:\Users\Wesley\Desktop\logs\zergling_5_17-08-29_10.20.34.txt.log",
-                @"C:\Users\Wesley\Desktop\logs\zergling_5_17-08-29_10.20.34.txt.log",
-                @"C:\Users\Wesley\Desktop\logs\miepmiep.txt",
-                @"C:\Users\Wesley\Desktop\logs\miepmiep.txt.log",
-                @"C:\Users\Wesley\Desktop\logs\overlord_223_17-08-29_10.20.34.txt.log"
-            };
-            //args = debugArgs;
-
             Console.Title = "GOALLogAnalyser";
             DateTime start = DateTime.Now;
             List<string> files = CheckFileNames(args);
