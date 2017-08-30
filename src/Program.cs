@@ -11,7 +11,7 @@ using GOALLogAnalyser.Output;
 namespace GOALLogAnalyser
 {
     /// <summary>
-    /// 
+    /// Main program that handles input and console printing.
     /// </summary>
     class Program
     {
@@ -34,6 +34,11 @@ namespace GOALLogAnalyser
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Checks the for each file if they exist to prevent future errors.
+        /// </summary>
+        /// <param name="fileNames">The file names.</param>
+        /// <returns>A new list of only valid file names.</returns>
         private static List<string> CheckFileNames(string[] fileNames)
         {
             DateTime start = DateTime.Now;
@@ -76,6 +81,11 @@ namespace GOALLogAnalyser
             return files;
         }
 
+        /// <summary>
+        /// Generates the agents from the supplied files.
+        /// </summary>
+        /// <param name="files">The files.</param>
+        /// <returns></returns>
         private static List<Agent> GenerateAgents(List<string> files)
         {
             DateTime start = DateTime.Now;
@@ -123,6 +133,11 @@ namespace GOALLogAnalyser
             return agents;
         }
 
+        /// <summary>
+        /// Analyzes the specified agents.
+        /// </summary>
+        /// <param name="agents">The agents.</param>
+        /// <returns></returns>
         private static List<AgentTypeProfile> Analyze(Agent[] agents)
         {
             DateTime start = DateTime.Now;
@@ -154,6 +169,10 @@ namespace GOALLogAnalyser
             return new List<AgentTypeProfile>();
         }
 
+        /// <summary>
+        /// Generates the output.
+        /// </summary>
+        /// <param name="agents">The agents.</param>
         private static void GenerateOutput(List<AgentTypeProfile> agents)
         {
             DateTime start = DateTime.Now;
