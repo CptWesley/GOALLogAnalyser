@@ -65,6 +65,7 @@
     <Compile Include="src\Analyzation\Modules\ModuleProfileCollection.cs" />
     <Compile Include="src\Analyzation\RecordMessageParser.cs" />
     <Compile Include="src\Analyzation\RecordMessageType.cs" />
+    <Compile Include="src\Analyzation\Threads\RecordSorter.cs" />
     <Compile Include="src\Exceptions\InvalidFileContentException.cs" />
     <Compile Include="src\Exceptions\InvalidFileNameException.cs" />
     <Compile Include="src\Output\TextGenerator.cs" />
