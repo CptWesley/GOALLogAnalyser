@@ -63,6 +63,8 @@
     <Compile Include="src\Analyzation\Cycles\CycleProfile.cs" />
     <Compile Include="src\Analyzation\Modules\ModuleProfile.cs" />
     <Compile Include="src\Analyzation\Modules\ModuleProfileCollection.cs" />
+    <Compile Include="src\Analyzation\Queries\QueryProfile.cs" />
+    <Compile Include="src\Analyzation\Queries\QueryProfileCollection.cs" />
     <Compile Include="src\Analyzation\RecordMessageParser.cs" />
     <Compile Include="src\Analyzation\RecordMessageType.cs" />
     <Compile Include="src\Analyzation\Threads\RecordSorter.cs" />
