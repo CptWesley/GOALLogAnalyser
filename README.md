@@ -29,4 +29,4 @@ Analyses GOAL logs.
 0. __*NB: By default this program will export all formats. Start using the `-json`, `-text`, `-site` flag arguments to get single type of output.*__
 1. Drag and drop all log files onto the executable to process the data.
 2. Wait until the program finishes.
-3. Output can be found in the newly created __*output*__ directory located in the original directory where the logs were dragged from.
+3. Output can be found in the newly created __*output*__ directory located in the current working directory.
