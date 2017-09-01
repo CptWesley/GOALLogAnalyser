@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GOALLogAnalyser.Analyzation;
 using GOALLogAnalyser.Analyzation.Agents;
@@ -48,14 +49,30 @@ namespace GOALLogAnalyser
 
             int failures = 0;
             List<string> files = new List<string>();
+            Regex rgx = new Regex("-logs=(.+)");
+
             foreach (string file in fileNames)
             {
+                Match match = rgx.Match(file);
+
                 if (file == "-json")
                     _json = true;
                 else if (file == "-text")
                     _text = true;
                 else if (file == "-site")
                     _site = true;
+                else if (match.Success)
+                {
+                    string dir = match.Groups[1].Value;
+                    if (Directory.Exists(dir))
+                    {
+                        foreach (string s in Directory.GetFiles(dir))
+                        {
+                            files.Add(s);
+                            Console.WriteLine("Found: " + s);
+                        }
+                    }
+                }
                 else
                 {
                     if (File.Exists(file))
