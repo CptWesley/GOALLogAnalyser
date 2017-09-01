@@ -190,6 +190,11 @@ namespace GOALLogAnalyser
                 TextGenerator textGenerator = new TextGenerator("output/text/");
                 textGenerator.Write(agents);
             }
+            if (_site)
+            {
+                SiteGenerator siteGenerator = new SiteGenerator("output/site/");
+                siteGenerator.Write(agents);
+            }
 
             Console.WriteLine("\nFinished Generating Site in {0} seconds.",
                 (DateTime.Now - start).TotalSeconds.ToString("N3", CultureInfo.InvariantCulture));
