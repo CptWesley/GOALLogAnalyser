@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using GOALLogAnalyser.Analyzation.Cycles;
 using GOALLogAnalyser.Analyzation.Modules;
 using GOALLogAnalyser.Analyzation.Queries;
@@ -115,10 +116,10 @@ namespace GOALLogAnalyser.Analyzation.Agents
                         lastCycleTime = r.Time;
                         break;
                     case RecordMessageType.QuerySuccessType:
-                        AddQuery(result, msg.Item2[0], FindTimeSincePreviousRecord(r, recordFinder), true);
+                        AddQuery(result, msg.Item2[0], true);
                         break;
                     case RecordMessageType.QueryFailureType:
-                        AddQuery(result, msg.Item2[0], FindTimeSincePreviousRecord(r, recordFinder), false);
+                        AddQuery(result, msg.Item2[0], false);
                         break;
                 }
             }
@@ -126,20 +127,42 @@ namespace GOALLogAnalyser.Analyzation.Agents
             return result;
         }
 
-        private static void AddQuery(AgentProfile ap, string query, long time, bool hit)
+        private static void AddQuery(AgentProfile ap, string message, bool hit)
         {
+            //string pattern = @"((?<=\W)\d+)|('.+')";
+            int count = 0;
+            //string query = Regex.Replace(message, pattern, m => "Var" + count++);
+
+            string[] patterns =
+            {
+                @"\[.+\]",
+                @"'.+'",
+                @"(?<=\W)\d+",
+                @"true|false",
+                @"\w+(?=\)|,)"
+            };
+
+            string query = message;
+            foreach (string pattern in patterns)
+                query = Regex.Replace(query, pattern, m => "VAR" + count++);
+
             int index = ap.QueryProfiles.IndexOf(query);
             if (index == -1)
             {
                 QueryProfile qp = new QueryProfile(query);
 
-                qp.Add(time, hit);
+                qp.Add(hit);
                 ap.QueryProfiles.Add(qp);
             }
             else
             {
-                ap.QueryProfiles[index].Add(time, hit);
+                ap.QueryProfiles[index].Add(hit);
             }
+        }
+
+        public void AddProfile(string fileName)
+        {
+            
         }
 
         private static long FindTimeSincePreviousRecord(Record r, RecordFinder recordFinder)

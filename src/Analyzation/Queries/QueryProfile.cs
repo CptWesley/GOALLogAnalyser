@@ -35,20 +35,6 @@
         /// </value>
         public long TotalTime { get; private set; }
         /// <summary>
-        /// Gets the shortest time spent doing this query.
-        /// </summary>
-        /// <value>
-        /// The shortest time spent doing this query.
-        /// </value>
-        public long ShortestTime { get; private set; }
-        /// <summary>
-        /// Gets the longest time spent doing this query.
-        /// </summary>
-        /// <value>
-        /// The longest time spent doing this query.
-        /// </value>
-        public long LongestTime { get; private set; }
-        /// <summary>
         /// Gets the average time spent doing this query.
         /// </summary>
         /// <value>
@@ -74,8 +60,6 @@
             Hits = 0;
             Misses = 0;
             TotalTime = 0;
-            ShortestTime = long.MaxValue;
-            LongestTime = long.MinValue;
         }
 
         private long GetAverageTime()
@@ -88,18 +72,12 @@
         /// </summary>
         /// <param name="time">The time.</param>
         /// <param name="hit">if set to <c>true</c> [hit].</param>
-        public void Add(long time, bool hit)
+        public void Add(bool hit)
         {
             if (hit)
                 ++Hits;
             else
                 ++Misses;
-
-            TotalTime += time;
-            if (ShortestTime > time)
-                ShortestTime = time;
-            if (LongestTime < time)
-                LongestTime = time;
         }
 
         /// <summary>
@@ -118,25 +96,6 @@
                 Misses = a.Misses + b.Misses,
                 TotalTime = a.TotalTime + b.TotalTime
             };
-
-            if (a.ShortestTime < b.ShortestTime)
-            {
-                res.ShortestTime = a.ShortestTime;
-            }
-            else
-            {
-                res.ShortestTime = b.ShortestTime;
-            }
-
-            if (a.LongestTime > b.LongestTime)
-            {
-                res.LongestTime = a.LongestTime;
-            }
-            else
-            {
-                res.LongestTime = b.LongestTime;
-            }
-
 
             return res;
         }
