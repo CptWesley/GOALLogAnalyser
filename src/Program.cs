@@ -74,7 +74,7 @@ namespace GOALLogAnalyser
             if (!_json && !_text && !_site)
                 _text = _json = _site = true;
 
-            Console.WriteLine("\nFinished Finding Files in {0} seconds. Successful: {1} Failures: {2}.",
+            Console.WriteLine("\nFinished finding files in {0} seconds. Successful: {1} Failures: {2}.",
                 (DateTime.Now - start).TotalSeconds.ToString("N3", CultureInfo.InvariantCulture),
                 files.Count, failures);
 
@@ -126,7 +126,7 @@ namespace GOALLogAnalyser
             }
             Task.WaitAll(tasks);
 
-            Console.WriteLine("\nFinished Parsing Logs in {0} seconds. Successful: {1} Failures: {2}.",
+            Console.WriteLine("\nFinished parsing logs in {0} seconds. Successful: {1} Failures: {2}.",
                 (DateTime.Now - start).TotalSeconds.ToString("N3", CultureInfo.InvariantCulture),
                 index, failures);
 
@@ -161,7 +161,7 @@ namespace GOALLogAnalyser
 
             if (analyzer.Done)
             {
-                Console.WriteLine("\nFinished Analyzing Agents in {0} seconds.",
+                Console.WriteLine("\nFinished analyzing agents in {0} seconds.",
                     (DateTime.Now - start).TotalSeconds.ToString("N3", CultureInfo.InvariantCulture));
 
                 return analyzer.Profiles;
@@ -196,7 +196,7 @@ namespace GOALLogAnalyser
                 siteGenerator.Write(agents);
             }
 
-            Console.WriteLine("\nFinished Generating Site in {0} seconds.",
+            Console.WriteLine("\nFinished creating output in {0} seconds.",
                 (DateTime.Now - start).TotalSeconds.ToString("N3", CultureInfo.InvariantCulture));
         }
     }
