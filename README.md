@@ -24,6 +24,7 @@ Analyses GOAL logs.
     * Include statistics each cycle seperator
     * Entry of a module
     * Exit of a module
+    * Evaluation of rule conditions
 4. Run the MAS.
 #### Analyse:
 0. __*NB: By default this program will export all formats. Start using the `-json`, `-text`, `-site` flag arguments to get single type of output.*__
