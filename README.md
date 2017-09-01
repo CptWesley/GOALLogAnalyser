@@ -11,7 +11,7 @@ Analyses GOAL logs.
 #### Output formats:
 - Text files
 - JSON
-- HTML & CSS (provided by @pvdstel at https://github.com/pvdstel/log-tablr)
+- Website (provided by @pvdstel at https://github.com/pvdstel/log-tablr)
 
 
 ### How to use:
