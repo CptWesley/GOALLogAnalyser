@@ -61,7 +61,7 @@ namespace GOALLogAnalyser.Analyzation.Agents
         /// <param name="name">The name.</param>
         /// <param name="records">The records.</param>
         /// <returns>A new agentprofile based on the supplied records.</returns>
-        public static AgentProfile Create(string name, Record[] records, RecordFinder recordFinder)
+        public static AgentProfile Create(string name, Record[] records)
         {
             AgentProfile result = new AgentProfile(name);
 
@@ -163,16 +163,6 @@ namespace GOALLogAnalyser.Analyzation.Agents
         public void AddProfile(string fileName)
         {
             
-        }
-
-        private static long FindTimeSincePreviousRecord(Record r, RecordFinder recordFinder)
-        {
-            int index = recordFinder.IndexOf(r.Thread, r.Sequence);
-
-            if (index == 0)
-                return 0;
-
-            return r.Time - recordFinder.Threads[r.Thread][index - 1].Time;
         }
     }
 }
