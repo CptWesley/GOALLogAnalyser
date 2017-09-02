@@ -60,7 +60,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="src\Agent.cs" />
     <Compile Include="src\Analyzation\Agents\AgentProfile.cs" />
     <Compile Include="src\Analyzation\Agents\AgentTypeProfile.cs" />
     <Compile Include="src\Analyzation\Analyzer.cs" />
@@ -72,15 +71,11 @@
     <Compile Include="src\Analyzation\Queries\QueryProfileCollection.cs" />
     <Compile Include="src\Analyzation\RecordMessageParser.cs" />
     <Compile Include="src\Analyzation\RecordMessageType.cs" />
-    <Compile Include="src\Analyzation\Threads\RecordFinder.cs" />
-    <Compile Include="src\Analyzation\Threads\RecordSorter.cs" />
     <Compile Include="src\Exceptions\InvalidFileContentException.cs" />
     <Compile Include="src\Exceptions\InvalidFileNameException.cs" />
     <Compile Include="src\Output\TextGenerator.cs" />
-    <Compile Include="src\Parsing\LogParser.cs" />
     <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\Parsing\Record.cs" />
     <Compile Include="src\Output\JsonGenerator.cs" />
     <Compile Include="src\Output\SiteGenerator.cs" />
   </ItemGroup>

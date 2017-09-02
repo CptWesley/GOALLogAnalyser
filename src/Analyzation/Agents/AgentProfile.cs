@@ -7,9 +7,7 @@ using System.Xml.Linq;
 using GOALLogAnalyser.Analyzation.Cycles;
 using GOALLogAnalyser.Analyzation.Modules;
 using GOALLogAnalyser.Analyzation.Queries;
-using GOALLogAnalyser.Analyzation.Threads;
 using GOALLogAnalyser.Exceptions;
-using GOALLogAnalyser.Parsing;
 
 namespace GOALLogAnalyser.Analyzation.Agents
 {
@@ -58,6 +56,7 @@ namespace GOALLogAnalyser.Analyzation.Agents
         /// Initializes a new instance of the <see cref="AgentProfile"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
+        /// <param name="type">The type.</param>
         public AgentProfile(string name, string type)
         {
             Name = name;
@@ -291,11 +290,6 @@ namespace GOALLogAnalyser.Analyzation.Agents
             {
                 ap.QueryProfiles[index].Add(hit);
             }
-        }
-
-        public void AddProfile(string fileName)
-        {
-            
         }
     }
 }

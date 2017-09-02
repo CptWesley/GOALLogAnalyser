@@ -70,7 +70,6 @@
         /// <summary>
         /// Adds the specified query data.
         /// </summary>
-        /// <param name="time">The time.</param>
         /// <param name="hit">if set to <c>true</c> [hit].</param>
         public void Add(bool hit)
         {

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using GOALLogAnalyser.Analyzation;
 using GOALLogAnalyser.Analyzation.Agents;
 using GOALLogAnalyser.Output;
@@ -100,6 +98,11 @@ namespace GOALLogAnalyser
             return files;
         }
 
+        /// <summary>
+        /// Analyzes the specified files.
+        /// </summary>
+        /// <param name="files">The files.</param>
+        /// <returns></returns>
         private static List<AgentTypeProfile> Analyze(List<string> files)
         {
             DateTime start = DateTime.Now;
@@ -134,96 +137,6 @@ namespace GOALLogAnalyser
         }
 
         /// <summary>
-        /// Generates the agents from the supplied files.
-        /// </summary>
-        /// <param name="files">The files.</param>
-        /// <returns></returns>
-        private static List<Agent> GenerateAgents(List<string> files)
-        {
-            DateTime start = DateTime.Now;
-            Console.WriteLine("==============================");
-            Console.WriteLine("==== Step 2: Parsing Logs ====");
-            Console.WriteLine("==============================");
-
-            List<Agent> agents = new List<Agent>();
-            //Task[] tasks = new Task[files.Count];
-            int index = 0;
-            int failures = 0;
-            for (int i = 0; i < files.Count; ++i)
-            {
-                int fileIndex = i;
-                //tasks[i] = Task.Factory.StartNew(() =>
-                //{
-                    Agent agent = null;
-                    try
-                    {
-                        agent = Agent.Create(files[fileIndex]);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.GetType().Name + ": " + files[fileIndex]);
-                    }
-
-                    if (agent != null)
-                    {
-                        Console.WriteLine("Parsed: " + files[fileIndex]);
-                        agents.Add(agent);
-                        ++index;
-                    }
-                    else
-                    {
-                        ++failures;
-                    }
-                //});
-            }
-            //Task.WaitAll(tasks);
-
-            Console.WriteLine("\nFinished parsing logs in {0} seconds. Successful: {1} Failures: {2}.",
-                (DateTime.Now - start).TotalSeconds.ToString("N3", CultureInfo.InvariantCulture),
-                index, failures);
-
-            return agents;
-        }
-
-        /*
-        /// <summary>
-        /// Analyzes the specified agents.
-        /// </summary>
-        /// <param name="agents">The agents.</param>
-        /// <returns></returns>
-        private static List<AgentTypeProfile> Analyze(Agent[] agents)
-        {
-            DateTime start = DateTime.Now;
-            Console.WriteLine("==============================");
-            Console.WriteLine("==== Step 3: Analyzing  ======");
-            Console.WriteLine("==============================");
-
-            Console.WriteLine("This might take a while...");
-
-            Analyzer analyzer = new Analyzer();
-
-            Task.Factory.StartNew(() => analyzer.Analyze(agents.ToArray()));
-
-            while (!analyzer.Done)
-            {
-                Console.Write("\rProgress: {0}/{1}.", analyzer.Progress, analyzer.Total);
-            }
-            Console.Write("\rProgress: {0}/{1}.", analyzer.Progress, analyzer.Total);
-
-            Console.WriteLine();
-
-            if (analyzer.Done)
-            {
-                Console.WriteLine("\nFinished analyzing agents in {0} seconds.",
-                    (DateTime.Now - start).TotalSeconds.ToString("N3", CultureInfo.InvariantCulture));
-
-                return analyzer.Profiles;
-            }
-            return new List<AgentTypeProfile>();
-        }
-        */
-
-        /// <summary>
         /// Generates the output.
         /// </summary>
         /// <param name="agents">The agents.</param>
@@ -231,7 +144,7 @@ namespace GOALLogAnalyser
         {
             DateTime start = DateTime.Now;
             Console.WriteLine("==============================");
-            Console.WriteLine("==== Step 4: Create Output  ==");
+            Console.WriteLine("==== Step 3: Create Output  ==");
             Console.WriteLine("==============================");
 
             if (_json)
