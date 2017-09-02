@@ -16,6 +16,15 @@ namespace GOALLogAnalyser.Analyzation.Agents
     /// </summary>
     public class AgentProfile
     {
+        
+        private static Regex _queryRegex = new Regex(String.Join("|", new[] {
+            @"\[.+\]",
+            @"'.+'",
+            @"(?<=\W)\d+",
+            @"true|false",
+            @"\w+(?=\)|,)"
+        }));
+
         /// <summary>
         /// Gets the name.
         /// </summary>
@@ -261,22 +270,8 @@ namespace GOALLogAnalyser.Analyzation.Agents
 
         private static void AddQuery(AgentProfile ap, string message, bool hit)
         {
-            //string pattern = @"((?<=\W)\d+)|('.+')";
             int count = 0;
-            //string query = Regex.Replace(message, pattern, m => "Var" + count++);
-
-            string[] patterns =
-            {
-                @"\[.+\]",
-                @"'.+'",
-                @"(?<=\W)\d+",
-                @"true|false",
-                @"\w+(?=\)|,)"
-            };
-
-            string query = message;
-            foreach (string pattern in patterns)
-                query = Regex.Replace(query, pattern, m => "VAR" + count++);
+            string query = _queryRegex.Replace(message, m => "VAR" + count++);
 
             int index = ap.QueryProfiles.IndexOf(query);
             if (index == -1)
