@@ -26,8 +26,13 @@ Analyses GOAL logs.
     * Exit of a module
     * Evaluation of rule conditions
 4. Run the MAS.
-#### Analyse:
+#### Analysis:
 0. __*NB: By default this program will export all formats. Start using the `-json`, `-text`, `-site` flag arguments to get single type of output.*__
 1. Drag and drop all log files onto the executable to process the data.
 2. Wait until the program finishes.
 3. Output can be found in the newly created __*output*__ directory located in the current working directory.
+#### Arguments:
+- `-json` Use to export .json results.
+- `-text` Use to export plain text results.
+- `-site` Use to export html & javascript results.
+- `-logs=PATH` Use to get log files from a certain folder.
