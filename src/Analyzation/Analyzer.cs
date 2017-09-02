@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GOALLogAnalyser.Analyzation.Agents;
 
 namespace GOALLogAnalyser.Analyzation
@@ -8,13 +9,15 @@ namespace GOALLogAnalyser.Analyzation
     /// </summary>
     public class Analyzer
     {
+        private Object _lock = new Object();
+
         /// <summary>
         /// Gets the profiles.
         /// </summary>
         /// <value>
         /// The profiles.
         /// </value>
-        public List<AgentTypeProfile> Profiles { get; private set; }
+        public List<AgentTypeProfile> Profiles { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Analyzer"/> class.
@@ -30,18 +33,21 @@ namespace GOALLogAnalyser.Analyzation
         /// <param name="profile">The profile.</param>
         public void Add(AgentProfile profile)
         {
-            foreach (AgentTypeProfile typeProfile in Profiles)
+            lock (_lock)
             {
-                if (typeProfile.Name == profile.Type)
+                foreach (AgentTypeProfile typeProfile in Profiles)
                 {
-                    typeProfile.Add(profile);
-                    return;
+                    if (typeProfile.Name == profile.Type)
+                    {
+                        typeProfile.Add(profile);
+                        return;
+                    }
                 }
-            }
 
-            AgentTypeProfile newTypeProfile = new AgentTypeProfile(profile.Type);
-            newTypeProfile.Add(profile);
-            Profiles.Add(newTypeProfile);
+                AgentTypeProfile newTypeProfile = new AgentTypeProfile(profile.Type);
+                newTypeProfile.Add(profile);
+                Profiles.Add(newTypeProfile);
+            }
         }
     }
 }

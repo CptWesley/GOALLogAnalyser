@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using GOALLogAnalyser.Analyzation;
 using GOALLogAnalyser.Analyzation.Agents;
 using GOALLogAnalyser.Output;
@@ -112,22 +115,20 @@ namespace GOALLogAnalyser
 
             Analyzer analyzer = new Analyzer();
             int failures = 0;
-            foreach (string file in files)
+            Task[] tasks = files.Select(file => Task.Run(() =>
             {
-                Console.WriteLine(file);
-                AgentProfile agent;
                 try
                 {
-                    agent = AgentProfile.Create(file);
+                    analyzer.Add(AgentProfile.Create(file));
+                    Console.WriteLine("Parsed: " +  file);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.GetType() + ": " + file);
-                    ++failures;
-                    continue;
+                    Interlocked.Increment(ref failures);
                 }
-                analyzer.Add(agent);
-            }
+            })).ToArray();
+            Task.WaitAll(tasks);
 
             Console.WriteLine("\nFinished analyzing logs in {0} seconds. Successful: {1} Failures: {2}.",
                 (DateTime.Now - start).TotalSeconds.ToString("N3", CultureInfo.InvariantCulture),
