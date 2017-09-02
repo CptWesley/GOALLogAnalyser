@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using GOALLogAnalyser.Analyzation.Agents;
-using GOALLogAnalyser.Analyzation.Threads;
-using GOALLogAnalyser.Parsing;
 
 namespace GOALLogAnalyser.Analyzation
 {
@@ -12,139 +9,45 @@ namespace GOALLogAnalyser.Analyzation
     /// </summary>
     public class Analyzer
     {
+        private Object _lock = new Object();
+
         /// <summary>
         /// Gets the profiles.
         /// </summary>
         /// <value>
         /// The profiles.
         /// </value>
-        public List<AgentTypeProfile> Profiles { get; private set; }
-        /// <summary>
-        /// Gets a value indicating whether this <see cref="Analyzer"/> is done.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if done; otherwise, <c>false</c>.
-        /// </value>
-        public bool Done { get; private set; }
-        /// <summary>
-        /// Gets the current amount of profiles that have been created.
-        /// </summary>
-        /// <value>
-        /// The progress.
-        /// </value>
-        public int Progress { get; private set; }
-        /// <summary>
-        /// Gets the total amount of profiles to be created.
-        /// </summary>
-        /// <value>
-        /// The total.
-        /// </value>
-        public int Total { get; private set; }
+        public List<AgentTypeProfile> Profiles { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Analyzer"/> class.
         /// </summary>
         public Analyzer()
         {
-            Done = false;
-            Profiles = null;
-            Progress = 0;
-            Total = 0;
+            Profiles = new List<AgentTypeProfile>();
         }
 
         /// <summary>
-        /// Analyzes the specified agents.
+        /// Adds the specified profile.
         /// </summary>
-        /// <param name="agents">The agents.</param>
-        public void Analyze(Agent[] agents)
+        /// <param name="profile">The profile.</param>
+        public void Add(AgentProfile profile)
         {
-            Done = false;
-            Progress = 0;
-            Total = agents.Length;
-
-            Dictionary<string, List<Agent>> sortedAgents = SortAgents(agents);
-            Profiles = GenerateProfiles(sortedAgents);
-
-            Done = true;
-        }
-
-        /// <summary>
-        /// Sorts the agents on agent types.
-        /// </summary>
-        /// <param name="agents">The agents.</param>
-        /// <returns>A <see cref="Dictionary{AgentType,List}"/> containing a <see cref="List{Agent}"/> per agent type.</returns>
-        private Dictionary<string, List<Agent>> SortAgents(Agent[] agents)
-        {
-            Dictionary<string, List<Agent>> result = new Dictionary<string, List<Agent>>();
-
-            foreach (Agent a in agents)
+            lock (_lock)
             {
-                if (result.ContainsKey(a.Type))
+                foreach (AgentTypeProfile typeProfile in Profiles)
                 {
-                    result[a.Type].Add(a);
-                }
-                else
-                {
-                    result.Add(a.Type, new List<Agent>{a});
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Generates the profiles of the specified agents.
-        /// </summary>
-        /// <param name="agents">The agents.</param>
-        /// <returns>A List of generated profiles.</returns>
-        private List<AgentTypeProfile> GenerateProfiles(Dictionary<string, List<Agent>> agents)
-        {
-            List<AgentTypeProfile> result = new List<AgentTypeProfile>();
-
-            List<Task> tasks = new List<Task>();
-            foreach (KeyValuePair<string, List<Agent>> kv in agents)
-            {
-                AgentTypeProfile profile = new AgentTypeProfile(kv.Key);
-                foreach (Agent a in kv.Value)
-                {
-                    tasks.Add(Task.Factory.StartNew(() =>
+                    if (typeProfile.Name == profile.Type)
                     {
-                        profile.Add(AgentProfile.Create(a.Name, a.GetRecords()));
-                        ++Progress;
-                    }));
+                        typeProfile.Add(profile);
+                        return;
+                    }
                 }
 
-                result.Add(profile);
+                AgentTypeProfile newTypeProfile = new AgentTypeProfile(profile.Type);
+                newTypeProfile.Add(profile);
+                Profiles.Add(newTypeProfile);
             }
-            Task.WaitAll(tasks.ToArray());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Generates the thread dictionary.
-        /// </summary>
-        /// <param name="agents">The agents.</param>
-        /// <returns></returns>
-        private Dictionary<int, List<Record>> GenerateThreadDictionary(Agent[] agents)
-        {
-            Dictionary<int, List<Record>> result = new Dictionary<int, List<Record>>();
-
-            foreach (Agent a in agents)
-            {
-                foreach (Record r in a.GetRecords())
-                {
-                    if (!result.ContainsKey(r.Thread))
-                        result.Add(r.Thread, new List<Record>(1));
-                    result[r.Thread].Add(r);
-                }
-            }
-
-            foreach (KeyValuePair<int, List<Record>> kv in result)
-                new RecordSorter(kv.Value).Sort();
-
-
-            return result;
         }
     }
 }
