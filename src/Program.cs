@@ -24,11 +24,13 @@ namespace GOALLogAnalyser
             DateTime start = DateTime.Now;
             List<string> files = CheckFileNames(args);
             Console.WriteLine();
-            List<Agent> agents = GenerateAgents(files);
+            //List<Agent> agents = GenerateAgents(files);
             Console.WriteLine();
-            List<AgentTypeProfile> agentProfiles = Analyze(agents.ToArray());
+            // List<AgentTypeProfile> agentProfiles = Analyze(agents.ToArray());
+            List<AgentTypeProfile> agentProfiles = Analyze(files);
             Console.WriteLine();
             GenerateOutput(agentProfiles);
+
 
             Console.WriteLine("Finished in {0} seconds.", (DateTime.Now - start).TotalSeconds.ToString("N3", CultureInfo.InvariantCulture));
             Console.WriteLine("Press any key to exit...");
@@ -98,6 +100,39 @@ namespace GOALLogAnalyser
             return files;
         }
 
+        private static List<AgentTypeProfile> Analyze(List<string> files)
+        {
+            DateTime start = DateTime.Now;
+            Console.WriteLine("==============================");
+            Console.WriteLine("=== Step 2: Analyzing Logs ===");
+            Console.WriteLine("==============================");
+
+            Analyzer analyzer = new Analyzer();
+            int failures = 0;
+            foreach (string file in files)
+            {
+                Console.WriteLine(file);
+                AgentProfile agent;
+                try
+                {
+                    agent = AgentProfile.Create(file);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.GetType() + ": " + file);
+                    ++failures;
+                    continue;
+                }
+                analyzer.Add(agent);
+            }
+
+            Console.WriteLine("\nFinished analyzing logs in {0} seconds. Successful: {1} Failures: {2}.",
+                (DateTime.Now - start).TotalSeconds.ToString("N3", CultureInfo.InvariantCulture),
+                files.Count-failures, failures);
+
+            return analyzer.Profiles;
+        }
+
         /// <summary>
         /// Generates the agents from the supplied files.
         /// </summary>
@@ -111,14 +146,14 @@ namespace GOALLogAnalyser
             Console.WriteLine("==============================");
 
             List<Agent> agents = new List<Agent>();
-            Task[] tasks = new Task[files.Count];
+            //Task[] tasks = new Task[files.Count];
             int index = 0;
             int failures = 0;
             for (int i = 0; i < files.Count; ++i)
             {
                 int fileIndex = i;
-                tasks[i] = Task.Factory.StartNew(() =>
-                {
+                //tasks[i] = Task.Factory.StartNew(() =>
+                //{
                     Agent agent = null;
                     try
                     {
@@ -139,9 +174,9 @@ namespace GOALLogAnalyser
                     {
                         ++failures;
                     }
-                });
+                //});
             }
-            Task.WaitAll(tasks);
+            //Task.WaitAll(tasks);
 
             Console.WriteLine("\nFinished parsing logs in {0} seconds. Successful: {1} Failures: {2}.",
                 (DateTime.Now - start).TotalSeconds.ToString("N3", CultureInfo.InvariantCulture),
@@ -150,6 +185,7 @@ namespace GOALLogAnalyser
             return agents;
         }
 
+        /*
         /// <summary>
         /// Analyzes the specified agents.
         /// </summary>
@@ -185,6 +221,7 @@ namespace GOALLogAnalyser
             }
             return new List<AgentTypeProfile>();
         }
+        */
 
         /// <summary>
         /// Generates the output.

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
 using GOALLogAnalyser.Analyzation.Agents;
 using GOALLogAnalyser.Analyzation.Threads;
+using GOALLogAnalyser.Exceptions;
 using GOALLogAnalyser.Parsing;
 
 namespace GOALLogAnalyser.Analyzation
@@ -19,53 +22,29 @@ namespace GOALLogAnalyser.Analyzation
         /// The profiles.
         /// </value>
         public List<AgentTypeProfile> Profiles { get; private set; }
-        /// <summary>
-        /// Gets a value indicating whether this <see cref="Analyzer"/> is done.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if done; otherwise, <c>false</c>.
-        /// </value>
-        public bool Done { get; private set; }
-        /// <summary>
-        /// Gets the current amount of profiles that have been created.
-        /// </summary>
-        /// <value>
-        /// The progress.
-        /// </value>
-        public int Progress { get; private set; }
-        /// <summary>
-        /// Gets the total amount of profiles to be created.
-        /// </summary>
-        /// <value>
-        /// The total.
-        /// </value>
-        public int Total { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Analyzer"/> class.
         /// </summary>
         public Analyzer()
         {
-            Done = false;
-            Profiles = null;
-            Progress = 0;
-            Total = 0;
+            Profiles = new List<AgentTypeProfile>();
         }
 
-        /// <summary>
-        /// Analyzes the specified agents.
-        /// </summary>
-        /// <param name="agents">The agents.</param>
-        public void Analyze(Agent[] agents)
+        public void Add(AgentProfile profile)
         {
-            Done = false;
-            Progress = 0;
-            Total = agents.Length;
+            foreach (AgentTypeProfile typeProfile in Profiles)
+            {
+                if (typeProfile.Name == profile.Type)
+                {
+                    typeProfile.Add(profile);
+                    return;
+                }
+            }
 
-            Dictionary<string, List<Agent>> sortedAgents = SortAgents(agents);
-            Profiles = GenerateProfiles(sortedAgents);
-
-            Done = true;
+            AgentTypeProfile newTypeProfile = new AgentTypeProfile(profile.Type);
+            newTypeProfile.Add(profile);
+            Profiles.Add(newTypeProfile);
         }
 
         /// <summary>
@@ -92,6 +71,7 @@ namespace GOALLogAnalyser.Analyzation
             return result;
         }
 
+        /*
         /// <summary>
         /// Generates the profiles of the specified agents.
         /// </summary>
@@ -120,6 +100,7 @@ namespace GOALLogAnalyser.Analyzation
 
             return result;
         }
+        */
 
         /// <summary>
         /// Generates the thread dictionary.
