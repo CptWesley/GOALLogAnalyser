@@ -46,7 +46,35 @@
         /// <value>
         /// The average execution time.
         /// </value>
-        public double AverageExecutionTime => GetAverageExecutionTime();
+        public long AverageExecutionTime => GetAverageExecutionTime();
+        /// <summary>
+        /// Gets the sub module time.
+        /// </summary>
+        /// <value>
+        /// The sub module time.
+        /// </value>
+        public long TotalSubModuleTime { get; private set; }
+        /// <summary>
+        /// Gets the average sub module time.
+        /// </summary>
+        /// <value>
+        /// The average sub module time.
+        /// </value>
+        public long AverageSubModuleTime => GetAverageSubModuleTime();
+        /// <summary>
+        /// Gets the total inner module time.
+        /// </summary>
+        /// <value>
+        /// The total inner module time.
+        /// </value>
+        public long TotalInnerModuleTime => GetInnerModuleTime();
+        /// <summary>
+        /// Gets the average inner module time.
+        /// </summary>
+        /// <value>
+        /// The average inner module time.
+        /// </value>
+        public long AverageInnerModuleTime => GetInnerModuleTime();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleProfile"/> class.
@@ -117,11 +145,40 @@
         /// Gets the average execution time.
         /// </summary>
         /// <returns></returns>
-        public double GetAverageExecutionTime()
+        public long GetAverageExecutionTime()
         {
             if (Executions == 0)
                 return 0;
             return TotalExecutionTime / Executions;
+        }
+
+        /// <summary>
+        /// Gets the average sub module time.
+        /// </summary>
+        /// <returns></returns>
+        public long GetAverageSubModuleTime()
+        {
+            if (Executions == 0)
+                return 0;
+            return TotalSubModuleTime / Executions;
+        }
+
+        /// <summary>
+        /// Gets the inner module time.
+        /// </summary>
+        /// <returns></returns>
+        public long GetInnerModuleTime()
+        {
+            return TotalExecutionTime - TotalSubModuleTime;
+        }
+
+        /// <summary>
+        /// Gets the average inner module time.
+        /// </summary>
+        /// <returns></returns>
+        public long GetAverageInnerModuleTime()
+        {
+            return GetAverageExecutionTime() - GetAverageSubModuleTime();
         }
     }
 }
