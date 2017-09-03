@@ -17,7 +17,7 @@ namespace GOALLogAnalyser
     /// </summary>
     class Program
     {
-        private static bool _json, _text, _site;
+        private static bool _json, _text, _site, _collapsedOutput;
         private static string _outputPath = Directory.GetCurrentDirectory();
 
         static void Main(string[] args)
@@ -67,6 +67,8 @@ namespace GOALLogAnalyser
                     _text = true;
                 else if (file == "-site")
                     _site = true;
+                else if (file == "-collapsedoutput")
+                    _collapsedOutput = true;
                 else if (logsMatch.Success)
                 {
                     string dir = logsMatch.Groups[1].Value;
@@ -161,17 +163,35 @@ namespace GOALLogAnalyser
 
             if (_json)
             {
-                JsonGenerator jsonGenerator = new JsonGenerator(Path.Combine(_outputPath, "output/json/data.json"));
+                string path;
+                if (_collapsedOutput)
+                    path = Path.Combine(_outputPath, "data.json");
+                else
+                    path = Path.Combine(_outputPath, "output/json/data.json");
+
+                JsonGenerator jsonGenerator = new JsonGenerator(path);
                 jsonGenerator.Write(agents);
             }
             if (_text)
             {
-                TextGenerator textGenerator = new TextGenerator(Path.Combine(_outputPath, "output/text/"));
+                string path;
+                if (_collapsedOutput)
+                    path = _outputPath;
+                else
+                    path = Path.Combine(_outputPath, "output/text/");
+
+                TextGenerator textGenerator = new TextGenerator(path);
                 textGenerator.Write(agents);
             }
             if (_site)
             {
-                SiteGenerator siteGenerator = new SiteGenerator(Path.Combine(_outputPath, "output/site/"));
+                string path;
+                if (_collapsedOutput)
+                    path = _outputPath;
+                else
+                    path = Path.Combine(_outputPath, "output/site/");
+
+                SiteGenerator siteGenerator = new SiteGenerator(path);
                 siteGenerator.Write(agents);
             }
 

@@ -35,8 +35,8 @@ namespace GOALLogAnalyser.Output
         {
             System.IO.Directory.CreateDirectory(Directory);
 
-            File.WriteAllText(Directory + "index.html", Properties.Resources.index_template.Replace("~JSON~", Newtonsoft.Json.JsonConvert.SerializeObject(agents)));
-            File.WriteAllText(Directory + "bundle.js", Properties.Resources.bundle);
+            File.WriteAllText(Path.Combine(Directory, "index.html"), Properties.Resources.index_template.Replace("~JSON~", Newtonsoft.Json.JsonConvert.SerializeObject(agents)));
+            File.WriteAllText(Path.Combine(Directory, "bundle.js"), Properties.Resources.bundle);
         }
     }
 }
