@@ -203,68 +203,6 @@ namespace GOALLogAnalyser.Analyzation.Agents
                     throw new InvalidFileContentException();
                 }
             }
-
-            /*
-            Stack<long> enterTimes = new Stack<long>();
-            long lastCycleTime = -1;
-            foreach (Record r in records)
-            {
-                Tuple<uint, string[]> msg = RecordMessageParser.Parse(r.Message);
-
-                switch (msg.Item1)
-                {
-                    case RecordMessageType.ModuleEntryType:
-                        enterTimes.Push(r.Time);
-                        break;
-                    case RecordMessageType.ModuleExitType:
-                        long executionTime = r.Time - enterTimes.Pop();
-                        int index = result.ModuleProfiles.IndexOf(msg.Item2[0]);
-                        if (index == -1)
-                        {
-                            ModuleProfile mp = new ModuleProfile(msg.Item2[0]);
-
-                            mp.AddExecution(executionTime);
-                            result.ModuleProfiles.Add(mp);
-                        }
-                        else
-                        {
-                            result.ModuleProfiles[index].AddExecution(executionTime);
-                        }
-                        break;
-                    case RecordMessageType.CycleStatisticsType:
-                        long time = r.Time - lastCycleTime;
-                        if (lastCycleTime == -1)
-                            time = 0;
-                        Cycle cycle = new Cycle(time);
-
-                        if (!string.IsNullOrEmpty(msg.Item2[0]))
-                            cycle.Actions = int.Parse(msg.Item2[0]);
-                        if (!string.IsNullOrEmpty(msg.Item2[1]))
-                            cycle.MessagesSent = int.Parse(msg.Item2[1]);
-                        if (!string.IsNullOrEmpty(msg.Item2[2]))
-                            cycle.Queries = int.Parse(msg.Item2[2]);
-                        if (!string.IsNullOrEmpty(msg.Item2[3]))
-                            cycle.Beliefs = int.Parse(msg.Item2[3]);
-                        if (!string.IsNullOrEmpty(msg.Item2[4]))
-                            cycle.Goals = int.Parse(msg.Item2[4]);
-                        if (!string.IsNullOrEmpty(msg.Item2[5]))
-                            cycle.MessagesReceived = int.Parse(msg.Item2[5]);
-                        if (!string.IsNullOrEmpty(msg.Item2[6]))
-                            cycle.Percepts = int.Parse(msg.Item2[6]);
-
-                        result.CycleProfile.Add(cycle);
-                        lastCycleTime = r.Time;
-                        break;
-                    case RecordMessageType.QuerySuccessType:
-                        AddQuery(result, msg.Item2[0], true);
-                        break;
-                    case RecordMessageType.QueryFailureType:
-                        AddQuery(result, msg.Item2[0], false);
-                        break;
-                }
-            }
-            */
-
             return result;
         }
 
