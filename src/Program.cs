@@ -53,25 +53,25 @@ namespace GOALLogAnalyser
 
             int failures = 0;
             List<string> files = new List<string>();
-            Regex logsRgx = new Regex("-logs=(.+)");
-            Regex outputRgx = new Regex("-output=(.+)");
+            Regex logsRgx = new Regex("-(logs|l)=(.+)");
+            Regex outputRgx = new Regex("-(output|o)=(.+)");
 
             foreach (string file in fileNames)
             {
                 Match logsMatch = logsRgx.Match(file);
                 Match outputMatch = outputRgx.Match(file);
 
-                if (file == "-json")
+                if (file == "-json" || file == "-j")
                     _json = true;
-                else if (file == "-text")
+                else if (file == "-text" || file == "-t")
                     _text = true;
-                else if (file == "-site")
+                else if (file == "-site" || file == "-s")
                     _site = true;
-                else if (file == "-collapsedoutput")
+                else if (file == "-collapsedoutput" || file == "-co")
                     _collapsedOutput = true;
                 else if (logsMatch.Success)
                 {
-                    string dir = logsMatch.Groups[1].Value;
+                    string dir = logsMatch.Groups[2].Value;
                     if (Directory.Exists(dir))
                     {
                         foreach (string s in Directory.GetFiles(dir))
@@ -83,7 +83,7 @@ namespace GOALLogAnalyser
                 }
                 else if (outputMatch.Success)
                 {
-                    string dir = outputMatch.Groups[1].Value;
+                    string dir = outputMatch.Groups[2].Value;
                     if (Directory.Exists(dir))
                     {
                         _outputPath = dir;
