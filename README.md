@@ -32,7 +32,9 @@ Analyses GOAL logs.
 2. Wait until the program finishes.
 3. Output can be found in the newly created __*output*__ directory located in the current working directory.
 #### Arguments:
-- `-json` Use to export .json results.
-- `-text` Use to export plain text results.
-- `-site` Use to export html & javascript results.
-- `-logs=PATH` Use to get log files from a certain folder.
+- `-json (-j)` Use to export .json results.
+- `-text (-t)` Use to export plain text results.
+- `-site (-s)` Use to export html & javascript results.
+- `-logs=PATH (-l=PATH)` Use to get log files from a certain folder.
+- `-output=PATH (-o=PATH)` Use to set the output location of the logs rather than using the current working directory.
+- `-collapsedoutput (-co)` Use to create output without creating subfolders.
