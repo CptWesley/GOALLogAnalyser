@@ -117,6 +117,7 @@ namespace GOALLogAnalyser.Analyzation.Agents
                 {
                     Stack<long> enterTimes = new Stack<long>();
                     long lastCycleTime = -1;
+                    long lastModuleTime = 0;
                     while (reader.Read())
                     {
                         if (reader.IsStartElement() && reader.Name == "record")
@@ -154,13 +155,14 @@ namespace GOALLogAnalyser.Analyzation.Agents
                                     {
                                         ModuleProfile mp = new ModuleProfile(msg.Item2[0]);
 
-                                        mp.AddExecution(executionTime);
+                                        mp.AddExecution(executionTime, lastModuleTime);
                                         result.ModuleProfiles.Add(mp);
                                     }
                                     else
                                     {
-                                        result.ModuleProfiles[index].AddExecution(executionTime);
+                                        result.ModuleProfiles[index].AddExecution(executionTime, lastModuleTime);
                                     }
+                                    lastModuleTime = executionTime;
                                     break;
                                 case RecordMessageType.CycleStatisticsType:
                                     long time = msgTime - lastCycleTime;

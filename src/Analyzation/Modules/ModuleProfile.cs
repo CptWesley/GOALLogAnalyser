@@ -85,6 +85,7 @@
             Name = name;
             Executions = 0;
             TotalExecutionTime = 0;
+            TotalSubModuleTime = 0;
             ShortestExecutionTime = long.MaxValue;
             LongestExecutionTime = long.MinValue;
         }
@@ -131,10 +132,11 @@
         /// Adds an execution.
         /// </summary>
         /// <param name="executionTime">The execution time.</param>
-        public void AddExecution(long executionTime)
+        public void AddExecution(long executionTime, long subModuleTime)
         {
             ++Executions;
             TotalExecutionTime += executionTime;
+            TotalSubModuleTime += subModuleTime;
             if (ShortestExecutionTime > executionTime)
                 ShortestExecutionTime = executionTime;
             if (LongestExecutionTime < executionTime)
