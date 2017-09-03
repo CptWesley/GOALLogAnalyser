@@ -18,6 +18,7 @@ namespace GOALLogAnalyser
     class Program
     {
         private static bool _json, _text, _site;
+        private static string _outputPath = Directory.GetCurrentDirectory();
 
         static void Main(string[] args)
         {
@@ -52,11 +53,13 @@ namespace GOALLogAnalyser
 
             int failures = 0;
             List<string> files = new List<string>();
-            Regex rgx = new Regex("-logs=(.+)");
+            Regex logsRgx = new Regex("-logs=(.+)");
+            Regex outputRgx = new Regex("-output=(.+)");
 
             foreach (string file in fileNames)
             {
-                Match match = rgx.Match(file);
+                Match logsMatch = logsRgx.Match(file);
+                Match outputMatch = outputRgx.Match(file);
 
                 if (file == "-json")
                     _json = true;
@@ -64,9 +67,9 @@ namespace GOALLogAnalyser
                     _text = true;
                 else if (file == "-site")
                     _site = true;
-                else if (match.Success)
+                else if (logsMatch.Success)
                 {
-                    string dir = match.Groups[1].Value;
+                    string dir = logsMatch.Groups[1].Value;
                     if (Directory.Exists(dir))
                     {
                         foreach (string s in Directory.GetFiles(dir))
@@ -74,6 +77,14 @@ namespace GOALLogAnalyser
                             files.Add(s);
                             Console.WriteLine("Found: " + s);
                         }
+                    }
+                }
+                else if (outputMatch.Success)
+                {
+                    string dir = outputMatch.Groups[1].Value;
+                    if (Directory.Exists(dir))
+                    {
+                        _outputPath = dir;
                     }
                 }
                 else
@@ -150,17 +161,17 @@ namespace GOALLogAnalyser
 
             if (_json)
             {
-                JsonGenerator jsonGenerator = new JsonGenerator("output/json/data.json");
+                JsonGenerator jsonGenerator = new JsonGenerator(Path.Combine(_outputPath, "output/json/data.json"));
                 jsonGenerator.Write(agents);
             }
             if (_text)
             {
-                TextGenerator textGenerator = new TextGenerator("output/text/");
+                TextGenerator textGenerator = new TextGenerator(Path.Combine(_outputPath, "output/text/"));
                 textGenerator.Write(agents);
             }
             if (_site)
             {
-                SiteGenerator siteGenerator = new SiteGenerator("output/site/");
+                SiteGenerator siteGenerator = new SiteGenerator(Path.Combine(_outputPath, "output/site/"));
                 siteGenerator.Write(agents);
             }
 
